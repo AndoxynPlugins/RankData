@@ -1,0 +1,6 @@
+name: RankData
+main: net.daboross.bukkitdev.rankdata.RankData
+version: 0.0
+description: This plugin does various data manipulation with Ranks
+author: Dabo Ross
+depend: [PlayerData, PermissionsEx]
