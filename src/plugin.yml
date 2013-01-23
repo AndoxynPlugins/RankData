@@ -4,3 +4,20 @@ version: 0.0
 description: This plugin does various data manipulation with Ranks
 author: Dabo Ross
 depend: [PlayerData, PermissionsEx]
+permissions:
+  rankdata.*:
+    description: Gives access to all BanData commands
+    children:
+      contestdata.help: true
+      contestdata.reload: true
+    default: false
+  rankdata.help:
+    description: Allows you to use /cd ?
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.reload:
+    description: Allows you to view Contest Data
+    default: false
+    children:
+      contestdata.help: true

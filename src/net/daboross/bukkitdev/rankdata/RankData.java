@@ -16,6 +16,7 @@ public class RankData extends JavaPlugin {
     private static RankData currentInstance;
     private PlayerData pDataM;
     private RankDataCommandExecutor commandExecutor;
+    private Reloader reloader;
 
     @Override
     public void onEnable() {
@@ -40,6 +41,7 @@ public class RankData extends JavaPlugin {
         } else {
             getLogger().log(Level.SEVERE, "dCommand Not Found!");
         }
+        reloader = new Reloader(this);
         currentInstance = this;
     }
 
@@ -54,5 +56,9 @@ public class RankData extends JavaPlugin {
 
     protected PlayerData getPDataMain() {
         return pDataM;
+    }
+
+    protected Reloader getReloader() {
+        return reloader;
     }
 }

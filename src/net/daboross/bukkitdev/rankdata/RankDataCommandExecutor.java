@@ -23,7 +23,7 @@ public class RankDataCommandExecutor implements CommandExecutor {
     private final Map<String, String> helpList = new HashMap<>();
     private final Map<String, String[]> helpAliasMap = new HashMap<>();
     private final Map<String, String> permMap = new HashMap<>();
-    private RankData pluginMain;
+    private RankData rDataM;
     private PlayerData pDataM;
     private PlayerDataHandler pDataH;
 
@@ -31,11 +31,11 @@ public class RankDataCommandExecutor implements CommandExecutor {
      *
      */
     protected RankDataCommandExecutor(RankData mainPlugin) {
-        pluginMain = mainPlugin;
+        rDataM = mainPlugin;
         pDataM = mainPlugin.getPDataMain();
         pDataH = pDataM.getHandler();
-        initCommand("help", new String[]{"?"}, true, "dplugin.help", "This Command Views This Page");
-        initCommand("subcommand", new String[]{"subcommandalias", "anotheralias"}, /* Can This Command Be Run From The Console? */ true, "dplugin.runcommand", "This Is The Help Message For Sub Command");
+        initCommand("help", new String[]{"?"}, true, "rankdata.help", "This Command Views This Page");
+        initCommand("reload", new String[]{}, true, "rankdata.reload", "Reload Survivor Info");
     }
 
     private void initCommand(String cmd, String[] aliases, boolean isConsole, String permission, String helpString) {
@@ -51,25 +51,33 @@ public class RankDataCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("dcommand")) {
+        if (cmd.getName().equalsIgnoreCase("rd")) {
             if (args.length < 1) {
-                sender.sendMessage(ColorList.MAIN + "This is a base command, Please Use a sub command after it.");
-                sender.sendMessage(ColorList.MAIN + "To see all possible sub commands, type " + ColorList.CMD + "/" + cmd.getName() + ColorList.SUBCMD + " ?");
-                return true;
+                if (sender instanceof Player && !sender.hasPermission(permMap.get("help"))) {
+                    sender.sendMessage(ColorList.NOPERM + "You don't have permission to do this command!");
+                    return true;
+                } else {
+                    sender.sendMessage(ColorList.MAIN + "This is a base command, Please Use a sub command after it.");
+                    sender.sendMessage(ColorList.MAIN + "To see all possible sub commands, type " + ColorList.CMD + "/" + cmd.getName() + ColorList.SUBCMD + " ?");
+                    return true;
+                }
             }
             String commandName;
             if (aliasMap.containsKey(args[0].toLowerCase())) {
                 commandName = aliasMap.get(args[0].toLowerCase());
             } else {
-                sender.sendMessage(ColorList.MAIN + "The SubCommand: " + ColorList.CMD + args[0] + ColorList.MAIN + " Does not exist.");
-                sender.sendMessage(ColorList.MAIN + "To see all possible sub commands, type " + ColorList.CMD + "/" + cmd.getName() + ColorList.SUBCMD + " ?");
-                return true;
-            }
-            if (sender instanceof Player) {
-                if (!sender.hasPermission(permMap.get(commandName))) {
+                if (sender instanceof Player && !sender.hasPermission(permMap.get("help"))) {
                     sender.sendMessage(ColorList.NOPERM + "You don't have permission to do this command!");
                     return true;
+                } else {
+                    sender.sendMessage(ColorList.MAIN + "The SubCommand: " + ColorList.CMD + args[0] + ColorList.MAIN + " Does not exist.");
+                    sender.sendMessage(ColorList.MAIN + "To see all possible sub commands, type " + ColorList.CMD + "/" + cmd.getName() + ColorList.SUBCMD + " ?");
+                    return true;
                 }
+            }
+            if (sender instanceof Player && !sender.hasPermission(permMap.get(commandName))) {
+                sender.sendMessage(ColorList.NOPERM + "You don't have permission to do this command!");
+                return true;
             }
             boolean isConsole;
             if (isConsoleMap.containsKey(commandName)) {
@@ -85,8 +93,8 @@ public class RankDataCommandExecutor implements CommandExecutor {
             }
             if (commandName.equalsIgnoreCase("help")) {
                 runHelpCommand(sender, cmd, getSubArray(args));
-            } else if (commandName.equalsIgnoreCase("subcommand")) {
-                runSubCommand(sender, cmd, getSubArray(args));
+            } else if (commandName.equalsIgnoreCase("reload")) {
+                runReloadCommand(sender, cmd, getSubArray(args));
             }
             return true;
         }
@@ -101,9 +109,9 @@ public class RankDataCommandExecutor implements CommandExecutor {
         }
     }
 
-    private void runSubCommand(CommandSender sender, Command cmd, String[] args) {
-        sender.sendMessage(ColorList.MAIN + "You Just Ran Sub Command");
-        pluginMain.getLogger().log(Level.INFO, "{0} just ran Sub Command", sender.getName());
+    private void runReloadCommand(CommandSender sender, Command cmd, String[] args) {
+        sender.sendMessage(ColorList.MAIN + "Reloading Survivor Info");
+        rDataM.getReloader().reload();
     }
 
     private void runHelpCommand(CommandSender sender, Command cmd, String[] args) {
