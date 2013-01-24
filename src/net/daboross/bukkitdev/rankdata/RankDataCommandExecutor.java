@@ -111,7 +111,7 @@ public class RankDataCommandExecutor implements CommandExecutor {
 
     private void runReloadCommand(CommandSender sender, Command cmd, String[] args) {
         sender.sendMessage(ColorList.MAIN + "Reloading Survivor Info");
-        rDataM.getReloader().reload();
+        rDataM.getSurvivorReloader().reload();
     }
 
     private void runHelpCommand(CommandSender sender, Command cmd, String[] args) {
