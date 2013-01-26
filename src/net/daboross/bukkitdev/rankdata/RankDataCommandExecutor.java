@@ -3,7 +3,6 @@ package net.daboross.bukkitdev.rankdata;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import net.daboross.bukkitdev.playerdata.ColorList;
 import net.daboross.bukkitdev.playerdata.PlayerData;
 import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
@@ -18,11 +17,11 @@ import org.bukkit.entity.Player;
  */
 public class RankDataCommandExecutor implements CommandExecutor {
 
-    private final Map<String, String> aliasMap = new HashMap<>();
-    private final Map<String, Boolean> isConsoleMap = new HashMap<>();
-    private final Map<String, String> helpList = new HashMap<>();
-    private final Map<String, String[]> helpAliasMap = new HashMap<>();
-    private final Map<String, String> permMap = new HashMap<>();
+    private final Map<String, String> aliasMap = new HashMap<String, String>();
+    private final Map<String, Boolean> isConsoleMap = new HashMap<String, Boolean>();
+    private final Map<String, String> helpList = new HashMap<String, String>();
+    private final Map<String, String[]> helpAliasMap = new HashMap<String, String[]>();
+    private final Map<String, String> permMap = new HashMap<String, String>();
     private RankData rDataM;
     private PlayerData pDataM;
     private PlayerDataHandler pDataH;

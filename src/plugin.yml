@@ -4,20 +4,28 @@ version: 0.0
 description: This plugin does various data manipulation with Ranks
 author: Dabo Ross
 depend: [PlayerData, PermissionsEx]
+commands:
+   rd:
+     description: This is the base command for Player Data.
+     usage: /<command> [subcommand] (You can use /<command> ? for list of sub commands)
+     aliases: [rankdata, rdata, rankd]
 permissions:
   rankdata.*:
     description: Gives access to all BanData commands
     children:
-      contestdata.help: true
-      contestdata.reload: true
+      rankdata.help: true
+      rankdata.reloadsurvivor: true
+      rankdata.trust: true
     default: false
   rankdata.help:
-    description: Allows you to use /cd ?
+    description: Allows you to use /rd ?
+    default: false
+    children:
+      rankdata.help: true
+  rankdata.reloadsurvivor:
+    description: Allows you to run /rd reloadsurvivor which Checks all users to see if they qualify for Survivor Rank.
     default: false
     children:
       contestdata.help: true
-  rankdata.reload:
-    description: Allows you to view Contest Data
-    default: false
-    children:
-      contestdata.help: true
+  rankdata.trust:
+    description: Allows you to run /rd trust which will give a user the Trusted Rank.
