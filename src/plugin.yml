@@ -1,6 +1,6 @@
 name: RankData
 main: net.daboross.bukkitdev.rankdata.RankData
-version: 0.0
+version: 0.1
 description: This plugin does various data manipulation with Ranks
 author: Dabo Ross
 depend: [PlayerData, PermissionsEx]
@@ -20,8 +20,6 @@ permissions:
   rankdata.help:
     description: Allows you to use /rd ?
     default: false
-    children:
-      rankdata.help: true
   rankdata.reloadsurvivor:
     description: Allows you to run /rd reloadsurvivor which Checks all users to see if they qualify for Survivor Rank.
     default: false
@@ -29,3 +27,4 @@ permissions:
       contestdata.help: true
   rankdata.trust:
     description: Allows you to run /rd trust which will give a user the Trusted Rank.
+    default: false
