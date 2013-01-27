@@ -23,25 +23,24 @@ public class RankData extends JavaPlugin {
         Plugin playerDataPlugin = Bukkit.getPluginManager().getPlugin("PlayerData");
         if (playerDataPlugin == null) {
             getLogger().log(Level.SEVERE, "PlayerData Not Found!");
+        } else if (playerDataPlugin instanceof PlayerData) {
+            pDataM = (PlayerData) playerDataPlugin;
         } else {
-            if (playerDataPlugin instanceof PlayerData) {
-                pDataM = (PlayerData) playerDataPlugin;
-            } else {
-                getLogger().log(Level.SEVERE, "PlayerData Not Instance Of Player Data!");
-            }
+            getLogger().log(Level.SEVERE, "PlayerData Not Instance Of Player Data!");
         }
         if (pDataM == null) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         commandExecutor = new RankDataCommandExecutor(this);
-        PluginCommand dCommand = getCommand("dcommand");
-        if (dCommand != null) {
-            dCommand.setExecutor(commandExecutor);
+        PluginCommand rd = getCommand("rd");
+        if (rd != null) {
+            rd.setExecutor(commandExecutor);
         } else {
-            getLogger().log(Level.SEVERE, "dCommand Not Found!");
+            getLogger().log(Level.SEVERE, "Rank Data Command Not Found!");
         }
         reloader = new ReloadSurvivors(this);
+        reloader.reload();
         currentInstance = this;
     }
 
