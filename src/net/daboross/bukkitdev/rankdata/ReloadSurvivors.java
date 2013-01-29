@@ -1,6 +1,5 @@
 package net.daboross.bukkitdev.rankdata;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import net.daboross.bukkitdev.playerdata.PData;
@@ -24,14 +23,10 @@ public class ReloadSurvivors {
             return;
         }
         PData[] pDataList = rDataMain.getPDataMain().getHandler().getAllPDatas();
-        ArrayList<PData> readyList = new ArrayList<PData>();
         for (int i = 0; i < pDataList.length; i++) {
             PData current = pDataList[i];
-            if (isTrusted(current)) {
-                if (isReadyCheck(current)) {
-                    rDataMain.getLogger().log(Level.INFO, "{0} is ready for Survivor!", current.userName());
-                } else {
-                }
+            if (isReadyCheck(current)) {
+                rDataMain.getLogger().log(Level.INFO, "{0} is ready for Survivor!", current.userName());
             }
         }
     }
@@ -41,13 +36,13 @@ public class ReloadSurvivors {
 
     private boolean isReadyCheck(PData pData) {
         if (pData.isAlive()) {
-            if (isTrusted(pData)) {
+            if (isCorrectGroup(pData)) {
                 if (pData.joinedLastWithinDays(daysSinceOnlineAllowed)) {
                     if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn()) >= daysSinceJoin) {
                         if (TimeUnit.MILLISECONDS.toHours(pData.timePlayed()) >= hoursSpentOnline) {
                             return true;
                         } else {
-                            rDataMain.getLogger().log(Level.INFO, "{0} would be ready for Survivor, but time spent online is not enough", pData.userName());
+                            rDataMain.getLogger().log(Level.FINE, "{0} would be ready for Survivor, but time spent online is not enough", pData.userName());
                             return false;
                         }
                     }
@@ -57,14 +52,11 @@ public class ReloadSurvivors {
         return false;
     }
 
-    private boolean isTrusted(PData pData) {
-        if (pData.getGroup().equalsIgnoreCase("Trusted")) {
+    private boolean isCorrectGroup(PData pData) {
+        if (pData.getPermUser().has("trusted") && !pData.getPermUser().has("survivor")) {
             return true;
         } else {
             return false;
         }
-    }
-
-    private void trust(PData pData) {
     }
 }
