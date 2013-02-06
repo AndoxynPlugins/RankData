@@ -3,6 +3,7 @@ package net.daboross.bukkitdev.rankdata;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import net.daboross.bukkitdev.playerdata.PData;
+import net.daboross.bukkitdev.playerdata.PlayerData;
 import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
 
 /**
@@ -53,7 +54,7 @@ public class ReloadSurvivors {
     }
 
     private boolean isCorrectGroup(PData pData) {
-        if (pData.getPermUser().has("trusted") && !pData.getPermUser().has("survivor")) {
+        if (pData.hasPermission("trusted") && !pData.hasPermission("survivor")) {
             return true;
         } else {
             return false;
