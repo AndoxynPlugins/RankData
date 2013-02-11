@@ -36,16 +36,14 @@ public class ReloadSurvivors {
     private static final int daysSinceJoin = 60;
 
     private boolean isReadyCheck(PData pData) {
-        if (pData.isAlive()) {
-            if (isCorrectGroup(pData)) {
-                if (pData.joinedLastWithinDays(daysSinceOnlineAllowed)) {
-                    if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn()) >= daysSinceJoin) {
-                        if (TimeUnit.MILLISECONDS.toHours(pData.timePlayed()) >= hoursSpentOnline) {
-                            return true;
-                        } else {
-                            rDataMain.getLogger().log(Level.FINE, "{0} would be ready for Survivor, but time spent online is not enough", pData.userName());
-                            return false;
-                        }
+        if (isCorrectGroup(pData)) {
+            if (pData.joinedLastWithinDays(daysSinceOnlineAllowed)) {
+                if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn()) >= daysSinceJoin) {
+                    if (TimeUnit.MILLISECONDS.toHours(pData.timePlayed()) >= hoursSpentOnline) {
+                        return true;
+                    } else {
+                        rDataMain.getLogger().log(Level.FINER, "{0} would be ready for Survivor, but time spent online is not enough", pData.userName());
+                        return false;
                     }
                 }
             }
