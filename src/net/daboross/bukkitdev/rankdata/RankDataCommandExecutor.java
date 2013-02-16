@@ -28,20 +28,15 @@ public class RankDataCommandExecutor extends CommandExecutorBase {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("rd")) {
-            String commandName = isCommandValid(sender, cmd, label, args);
-            if (commandName == null) {
-                return true;
-            }
-            if (commandName.equalsIgnoreCase("help")) {
-                runHelpCommand(sender, cmd, getSubArray(args));
-            } else if (commandName.equalsIgnoreCase("reload")) {
-                runReloadCommand(sender, cmd, getSubArray(args));
-            }
-            return true;
+    public void runCommand(CommandSender sender, Command mainCommand, String mainCommandLabel, String subCommand, String subCommandLabel, String[] subCommandArgs) {
+        if (subCommand.equals("reload")) {
+            runReloadCommand(sender, mainCommand, subCommandArgs);
         }
-        return false;
+    }
+
+    @Override
+    public String getCommandName() {
+        return "rd";
     }
 
     private void runReloadCommand(CommandSender sender, Command cmd, String[] args) {
