@@ -38,7 +38,7 @@ public class ReloadSurvivors {
     private boolean isReadyCheck(PData pData) {
         if (isCorrectGroup(pData)) {
             if (pData.joinedLastWithinDays(daysSinceOnlineAllowed)) {
-                if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn()) >= daysSinceJoin) {
+                if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn().time()) >= daysSinceJoin) {
                     if (TimeUnit.MILLISECONDS.toHours(pData.timePlayed()) >= hoursSpentOnline) {
                         return true;
                     } else {
