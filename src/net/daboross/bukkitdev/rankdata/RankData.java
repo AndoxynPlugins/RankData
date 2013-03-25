@@ -39,6 +39,11 @@ public class RankData extends JavaPlugin {
         } else {
             getLogger().log(Level.SEVERE, "Rank Data Command Not Found!");
         }
+        if (!PlayerData.isPEX()) {
+            getLogger().log(Level.SEVERE, "PermissionsEx REQUIRED!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         reloader = new ReloadSurvivors(this);
         reloader.reload();
         currentInstance = this;
