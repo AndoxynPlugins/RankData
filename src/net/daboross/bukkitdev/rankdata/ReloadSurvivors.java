@@ -3,8 +3,8 @@ package net.daboross.bukkitdev.rankdata;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import net.daboross.bukkitdev.playerdata.PData;
-import net.daboross.bukkitdev.playerdata.PlayerData;
 import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
+import ru.tehkode.permissions.PermissionUser;
 
 /**
  *
@@ -27,6 +27,7 @@ public class ReloadSurvivors {
         for (int i = 0; i < pDataList.length; i++) {
             PData current = pDataList[i];
             if (isReadyCheck(current)) {
+                setSurvivor(current);
                 rDataMain.getLogger().log(Level.INFO, "{0} is ready for Survivor!", current.userName());
             }
         }
@@ -56,6 +57,16 @@ public class ReloadSurvivors {
             return true;
         } else {
             return false;
+        }
+    }
+
+    private void setSurvivor(PData pData) {
+        PermissionUser permUser = pData.getPermUser();
+        if (permUser != null) {
+            if (permUser.inGroup("Trusted")) {
+                permUser.addGroup("Survivor");
+                permUser.removeGroup("Trusted");
+            }
         }
     }
 }
