@@ -45,7 +45,12 @@ public class RankData extends JavaPlugin {
             return;
         }
         reloader = new ReloadSurvivors(this);
-        reloader.reload();
+        Runnable r = new Runnable() {
+            public void run() {
+                reloader.reload();
+            }
+        };
+        pDataM.getHandler().runAfterLoad(r);
         currentInstance = this;
     }
 
