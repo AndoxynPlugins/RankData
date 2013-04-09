@@ -16,7 +16,8 @@ public class RankData extends JavaPlugin {
     private static RankData currentInstance;
     private PlayerData pDataM;
     private RankDataCommandExecutor commandExecutor;
-    private ReloadSurvivors reloader;
+    private SurvivorChecker survivorChecker;
+    private AutoRanker autoRanker;
 
     @Override
     public void onEnable() {
@@ -44,10 +45,10 @@ public class RankData extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        reloader = new ReloadSurvivors(this);
+        survivorChecker = new SurvivorChecker(this);
         Runnable r = new Runnable() {
             public void run() {
-                reloader.reload();
+                survivorChecker.reload();
             }
         };
         pDataM.getHandler().runAfterLoad(r);
@@ -67,7 +68,7 @@ public class RankData extends JavaPlugin {
         return pDataM;
     }
 
-    protected ReloadSurvivors getSurvivorReloader() {
-        return reloader;
+    protected SurvivorChecker getSurvivorChecker() {
+        return survivorChecker;
     }
 }

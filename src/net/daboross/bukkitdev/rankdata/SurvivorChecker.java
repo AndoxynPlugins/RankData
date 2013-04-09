@@ -11,11 +11,11 @@ import ru.tehkode.permissions.PermissionUser;
  *
  * @author daboross
  */
-public class ReloadSurvivors {
+public class SurvivorChecker {
 
     private RankData rDataMain;
 
-    public ReloadSurvivors(RankData main) {
+    public SurvivorChecker(RankData main) {
         this.rDataMain = main;
     }
 

@@ -1,10 +1,11 @@
 name: RankData
 main: net.daboross.bukkitdev.rankdata.RankData
-version: 1.1
+version: 2.0
 author: Dabo Ross
 prefix: RD
 description: This plugin does various data manipulation with Ranks
 depend: [PlayerData, PermissionsEx]
+soft-depend:
 commands:
    rd:
      description: This is the base command for Player Data.
@@ -16,16 +17,68 @@ permissions:
     children:
       rankdata.help: true
       rankdata.reloadsurvivor: true
-      rankdata.trust: true
+      rankdata.addgroup.*: true
     default: false
   rankdata.help:
     description: Allows you to use /rd ?
     default: false
-  rankdata.reloadsurvivor:
-    description: Allows you to run /rd reloadsurvivor which Checks all users to see if they qualify for Survivor Rank.
+  rankdata.dhecksurvivors:
+    description: Allows you to use /rd checksurvivors
     default: false
     children:
       contestdata.help: true
-  rankdata.trust:
-    description: Allows you to run /rd trust which will give a user the Trusted Rank.
+  rankdata.viewrecords:
+    description: Allows you to use group-adding commands.
     default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.trusted:
+    description: Allows you to use /rd addtrusted
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.survivor:
+    description: Allows you to use /rd addsurvivor
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.architect:
+    description: Allows you to use /rd addarchitect
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.technician:
+    description: Allows you to use /rd addtechnician
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.agent:
+    description: Allows you to use /rd addagent
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.spy:
+    description: Allows you to use /rd addspy
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.addpvpmaster:
+    description: Allows you to use /rd addpvpmaster
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.addsigner:
+    description: Allows you to use /rd addsigner
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.addspawner:
+    description: Allows you to use /rd addspawner
+    default: false
+    children:
+      contestdata.help: true
+  rankdata.addgroup.addregionowneradder:
+    description: Allows you to use /rd addregionowneradder
+    default: false
+    children:
+      contestdata.help: true
