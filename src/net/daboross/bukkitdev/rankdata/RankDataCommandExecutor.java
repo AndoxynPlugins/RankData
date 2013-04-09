@@ -64,52 +64,52 @@ public class RankDataCommandExecutor extends CommandExecutorBase {
         } else if (subCommand.equals("addtrusted")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addTrusted(pData, sender.getName());
+                AutoRanker.addTrusted(pData, sender);
             }
         } else if (subCommand.equals("addsurvivor")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addSurvivor(pData, sender.getName());
+                AutoRanker.addSurvivor(pData, sender);
             }
         } else if (subCommand.equals("addarchitect")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addArchitect(pData, sender.getName());
+                AutoRanker.addArchitect(pData, sender);
             }
         } else if (subCommand.equals("addtechnician")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addTechnician(pData, sender.getName());
+                AutoRanker.addTechnician(pData, sender);
             }
         } else if (subCommand.equals("addagent")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addAgent(pData, sender.getName());
+                AutoRanker.addAgent(pData, sender);
             }
         } else if (subCommand.equals("addspy")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addSpy(pData, sender.getName());
+                AutoRanker.addSpy(pData, sender);
             }
         } else if (subCommand.equals("addpvpmaster")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addPvpmaster(pData, sender.getName());
+                AutoRanker.addPvpmaster(pData, sender);
             }
         } else if (subCommand.equals("addsigner")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addSigner(pData, sender.getName());
+                AutoRanker.addSigner(pData, sender);
             }
         } else if (subCommand.equals("addspawner")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addSpawner(pData, sender.getName());
+                AutoRanker.addSpawner(pData, sender);
             }
         } else if (subCommand.equals("addregionowneradder")) {
             PData pData = checkPermissionUserCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addRegionOwnerAdder(pData, sender.getName());
+                AutoRanker.addRegionOwnerAdder(pData, sender);
             }
         }
     }

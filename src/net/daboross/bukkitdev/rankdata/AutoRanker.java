@@ -3,8 +3,10 @@ package net.daboross.bukkitdev.rankdata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.daboross.bukkitdev.commandexecutorbase.ColorList;
 import net.daboross.bukkitdev.playerdata.Data;
 import net.daboross.bukkitdev.playerdata.PData;
+import org.bukkit.command.CommandSender;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -15,47 +17,47 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
  */
 public class AutoRanker {
 
-    public static void addTrusted(PData pData, String ranker) {
-        addGroup(pData, "Trusted", ranker);
+    public static void addTrusted(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "Trusted", ranker);
     }
 
-    public static void addArchitect(PData pData, String ranker) {
-        addGroup(pData, "Architect", ranker);
+    public static void addArchitect(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "Architect", ranker);
     }
 
-    public static void addSurvivor(PData pData, String ranker) {
-        addGroup(pData, "Survivor", ranker);
+    public static void addSurvivor(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "Survivor", ranker);
     }
 
-    public static void addTechnician(PData pData, String ranker) {
-        addGroup(pData, "Technician", ranker);
+    public static void addTechnician(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "Technician", ranker);
     }
 
-    public static void addAgent(PData pData, String ranker) {
-        addGroup(pData, "Agent", ranker);
+    public static void addAgent(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "Agent", ranker);
     }
 
-    public static void addSpy(PData pData, String ranker) {
-        addGroup(pData, "Spy", ranker);
+    public static void addSpy(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "Spy", ranker);
     }
 
-    public static void addPvpmaster(PData pData, String ranker) {
-        addGroup(pData, "pvpmaster", ranker);
+    public static void addPvpmaster(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "pvpmaster", ranker);
     }
 
-    public static void addSigner(PData pData, String ranker) {
-        addGroup(pData, "signer", ranker);
+    public static void addSigner(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "signer", ranker);
     }
 
-    public static void addSpawner(PData pData, String ranker) {
-        addGroup(pData, "spawner", ranker);
+    public static void addSpawner(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "spawner", ranker);
     }
 
-    public static void addRegionOwnerAdder(PData pData, String ranker) {
-        addGroup(pData, "regionOwnerAdder", ranker);
+    public static void addRegionOwnerAdder(PData pDataToBeRanked, CommandSender ranker) {
+        addGroup(pDataToBeRanked, "regionOwnerAdder", ranker);
     }
 
-    public static void addGroup(PData pData, String groupName, String ranker) {
+    public static void addGroup(PData pData, String groupName, CommandSender ranker) {
         PermissionUser permissionUser = pData.getPermUser();
         if (permissionUser == null || groupName == null) {
             throw new IllegalArgumentException("One or more null arguments");
@@ -74,9 +76,12 @@ public class AutoRanker {
             } else {
                 rawData = new ArrayList<String>();
             }
-            rawData.add("ADD " + ranker + " " + groupName);
+            rawData.add("ADD " + ranker.getName() + " " + groupName);
             Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
             pData.addData(finalData);
+            ranker.sendMessage(ColorList.NUMBER + groupName + ColorList.MAIN + " has been added to " + ColorList.NAME + pData.userName());
+        } else {
+            ranker.sendMessage(ColorList.NUMBER + groupName + ColorList.MAIN + " has already been added to " + ColorList.NAME + pData.userName() + ColorList.MAIN + "...");
         }
     }
 
