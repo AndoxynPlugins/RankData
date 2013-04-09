@@ -5,7 +5,6 @@ author: Dabo Ross
 prefix: RD
 description: This plugin does various data manipulation with Ranks
 depend: [PlayerData, PermissionsEx]
-soft-depend:
 commands:
    rd:
      description: This is the base command for Player Data.
