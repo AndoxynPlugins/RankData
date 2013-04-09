@@ -115,7 +115,7 @@ public class RankDataCommandExecutor extends CommandExecutorBase {
     }
 
     private PData checkPermissionUserCommand(CommandSender sender, String mainCommandLabel, String subCommandLabel, String[] subCommandArgs) {
-        if (subCommandArgs.length < 0) {
+        if (subCommandArgs.length < 1) {
             sender.sendMessage(ColorList.ILLEGALARGUMENT + "Please Specify a Player");
             sender.sendMessage(getHelpMessage(subCommandLabel, mainCommandLabel));
             return null;
@@ -139,7 +139,7 @@ public class RankDataCommandExecutor extends CommandExecutorBase {
     }
 
     private PData checkPDataOnlyCommand(CommandSender sender, String mainCommandLabel, String subCommandLabel, String[] subCommandArgs) {
-        if (subCommandArgs.length < 0) {
+        if (subCommandArgs.length < 1) {
             sender.sendMessage(ColorList.ILLEGALARGUMENT + "Please Specify a Player");
             sender.sendMessage(getHelpMessage(subCommandLabel, mainCommandLabel));
             return null;
