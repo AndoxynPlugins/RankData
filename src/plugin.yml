@@ -61,22 +61,22 @@ permissions:
     default: false
     children:
       contestdata.help: true
-  rankdata.addgroup.addpvpmaster:
+  rankdata.addgroup.pvpmaster:
     description: Allows you to use /rd addpvpmaster
     default: false
     children:
       contestdata.help: true
-  rankdata.addgroup.addsigner:
+  rankdata.addgroup.signer:
     description: Allows you to use /rd addsigner
     default: false
     children:
       contestdata.help: true
-  rankdata.addgroup.addspawner:
+  rankdata.addgroup.spawner:
     description: Allows you to use /rd addspawner
     default: false
     children:
       contestdata.help: true
-  rankdata.addgroup.addregionowneradder:
+  rankdata.addgroup.regionowneradder:
     description: Allows you to use /rd addregionowneradder
     default: false
     children:

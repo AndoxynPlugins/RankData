@@ -76,7 +76,7 @@ public class AutoRanker {
             } else {
                 rawData = new ArrayList<String>();
             }
-            rawData.add("ADD " + ranker.getName() + " " + groupName);
+            rawData.add("ADD " + ranker.getName() + " " + groupName + " " + System.currentTimeMillis());
             Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
             pData.addData(finalData);
             ranker.sendMessage(ColorList.NUMBER + groupName + ColorList.MAIN + " has been added to " + ColorList.NAME + pData.userName());
@@ -85,10 +85,19 @@ public class AutoRanker {
         }
     }
 
-    public static void setRanks(PermissionUser permissionUser, String[] permissionGroups) {
+    public static void setRanks(PData pData, PermissionUser permissionUser, String[] permissionGroups, CommandSender ranker) {
         for (PermissionGroup permissionGroup : permissionUser.getGroups()) {
             permissionUser.removeGroup(permissionGroup);
         }
+        List<String> rawData;
+        if (pData.hasData("rankrecord")) {
+            rawData = new ArrayList<String>(Arrays.asList(pData.getData("rankrecord").getData()));
+        } else {
+            rawData = new ArrayList<String>();
+        }
         permissionUser.setGroups(permissionGroups);
+        rawData.add("SET " + ranker.getName() + " " + permissionGroups + " " + System.currentTimeMillis());
+        Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
+        pData.addData(finalData);
     }
 }
