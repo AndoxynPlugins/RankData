@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.daboross.bukkitdev.playerdata.PData;
 import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
+import org.bukkit.Bukkit;
 import ru.tehkode.permissions.PermissionUser;
 
 /**
@@ -33,11 +34,14 @@ public class SurvivorChecker {
             PermissionUser permUser = current.getPermUser();
             if (isReadyCheck(current, permUser)) {
                 foundReady++;
-                setSurvivor(permUser);
-                l.log(Level.INFO, "Survivor has been added to {0}", current.userName());
+                setSurvivor(permUser, current);
             }
         }
-        l.log(Level.INFO, "Added Survivor to {0} users", foundReady);
+        if (foundReady != 0) {
+            l.log(Level.INFO, "Added Survivor to {0} users", foundReady);
+        } else {
+            l.log(Level.INFO, "Done Checking Survivors");
+        }
     }
     private static final int daysSinceOnlineAllowed = 4;
     private static final int hoursSpentOnline = 15;
@@ -69,7 +73,7 @@ public class SurvivorChecker {
         }
     }
 
-    private void setSurvivor(PermissionUser permUser) {
-        permUser.addGroup("Survivor");
+    private void setSurvivor(PermissionUser permUser, PData pData) {
+        AutoRanker.addSurvivor(pData, permUser, Bukkit.getServer().getConsoleSender());
     }
 }

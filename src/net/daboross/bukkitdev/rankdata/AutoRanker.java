@@ -29,6 +29,10 @@ public class AutoRanker {
         addGroup(pDataToBeRanked, "Survivor", ranker);
     }
 
+    public static void addSurvivor(PData pDataToBeRanked, PermissionUser permissionUserToBeRanker, CommandSender ranker) {
+        addGroup(pDataToBeRanked, permissionUserToBeRanker, "Survivor", ranker);
+    }
+
     public static void addTechnician(PData pDataToBeRanked, CommandSender ranker) {
         addGroup(pDataToBeRanked, "Technician", ranker);
     }
@@ -57,8 +61,11 @@ public class AutoRanker {
         addGroup(pDataToBeRanked, "regionOwnerAdder", ranker);
     }
 
-    public static void addGroup(PData pData, String groupName, CommandSender ranker) {
-        PermissionUser permissionUser = pData.getPermUser();
+    public static void addGroup(PData pData, String groupName, CommandSender sender) {
+        addGroup(pData, pData.getPermUser(), groupName, sender);
+    }
+
+    public static void addGroup(PData pData, PermissionUser permissionUser, String groupName, CommandSender ranker) {
         if (permissionUser == null || groupName == null) {
             throw new IllegalArgumentException("One or more null arguments");
         }
