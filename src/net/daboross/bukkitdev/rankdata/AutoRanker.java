@@ -6,10 +6,9 @@ import java.util.List;
 import net.daboross.bukkitdev.commandexecutorbase.ColorList;
 import net.daboross.bukkitdev.playerdata.Data;
 import net.daboross.bukkitdev.playerdata.PData;
+import net.daboross.bukkitdev.playerdata.PlayerData;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.command.CommandSender;
-import ru.tehkode.permissions.PermissionGroup;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 /**
  *
@@ -17,66 +16,16 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
  */
 public class AutoRanker {
 
-    public static void addTrusted(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "Trusted", ranker);
+    public static void addGroup(PData pData, String groupName, CommandSender ranker) {
+        addGroup(PlayerData.getPermissionHandler(), pData, groupName, ranker);
     }
 
-    public static void addArchitect(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "Architect", ranker);
-    }
-
-    public static void addSurvivor(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "Survivor", ranker);
-    }
-
-    public static void addSurvivor(PData pDataToBeRanked, PermissionUser permissionUserToBeRanker, CommandSender ranker) {
-        addGroup(pDataToBeRanked, permissionUserToBeRanker, "Survivor", ranker);
-    }
-
-    public static void addTechnician(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "Technician", ranker);
-    }
-
-    public static void addAgent(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "Agent", ranker);
-    }
-
-    public static void addSpy(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "Spy", ranker);
-    }
-
-    public static void addPvpmaster(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "pvpmaster", ranker);
-    }
-
-    public static void addSigner(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "signer", ranker);
-    }
-
-    public static void addSpawner(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "spawner", ranker);
-    }
-
-    public static void addRegionOwnerAdder(PData pDataToBeRanked, CommandSender ranker) {
-        addGroup(pDataToBeRanked, "regionOwnerAdder", ranker);
-    }
-
-    public static void addGroup(PData pData, String groupName, CommandSender sender) {
-        addGroup(pData, pData.getPermUser(), groupName, sender);
-    }
-
-    public static void addGroup(PData pData, PermissionUser permissionUser, String groupName, CommandSender ranker) {
-        if (permissionUser == null || groupName == null) {
+    public static void addGroup(Permission permissionHandler, PData pData, String groupName, CommandSender ranker) {
+        if (permissionHandler == null || pData == null || groupName == null || ranker == null) {
             throw new IllegalArgumentException("One or more null arguments");
         }
-        PermissionGroup group = PermissionsEx.getPermissionManager().getGroup(groupName);
-        if (!permissionUser.inGroup(group)) {
-            for (PermissionGroup currentGroup : permissionUser.getGroups()) {
-                if (group.isChildOf(currentGroup)) {
-                    permissionUser.removeGroup(currentGroup);
-                }
-            }
-            permissionUser.addGroup(group);
+        if (!permissionHandler.playerInGroup((String) null, pData.userName(), groupName)) {
+            permissionHandler.playerAddGroup((String) null, pData.userName(), groupName);
             List<String> rawData;
             if (pData.hasData("rankrecord")) {
                 rawData = new ArrayList<String>(Arrays.asList(pData.getData("rankrecord").getData()));
@@ -92,9 +41,12 @@ public class AutoRanker {
         }
     }
 
-    public static void setRanks(PData pData, PermissionUser permissionUser, String[] permissionGroups, CommandSender ranker) {
-        for (PermissionGroup permissionGroup : permissionUser.getGroups()) {
-            permissionUser.removeGroup(permissionGroup);
+    public static void setRanks(Permission permissionHandler, PData pData, String[] permissionGroups, CommandSender ranker) {
+        for (String group : permissionHandler.getPlayerGroups((String) null, pData.userName())) {
+            permissionHandler.playerRemoveGroup((String) null, pData.userName(), group);
+        }
+        for (String group : permissionGroups) {
+            permissionHandler.playerAddGroup((String) null, pData.userName(), group);
         }
         List<String> rawData;
         if (pData.hasData("rankrecord")) {
@@ -102,8 +54,8 @@ public class AutoRanker {
         } else {
             rawData = new ArrayList<String>();
         }
-        permissionUser.setGroups(permissionGroups);
-        rawData.add("SET " + ranker.getName() + " " + permissionGroups + " " + System.currentTimeMillis());
+
+        rawData.add("SET " + ranker.getName() + " " + Arrays.asList(permissionGroups) + " " + System.currentTimeMillis());
         Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
         pData.addData(finalData);
     }

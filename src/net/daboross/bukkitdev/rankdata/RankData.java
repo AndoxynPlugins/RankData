@@ -17,7 +17,6 @@ public class RankData extends JavaPlugin {
     private PlayerData pDataM;
     private RankDataCommandExecutor commandExecutor;
     private SurvivorChecker survivorChecker;
-    private AutoRanker autoRanker;
 
     @Override
     public void onEnable() {
@@ -40,8 +39,8 @@ public class RankData extends JavaPlugin {
         } else {
             getLogger().log(Level.SEVERE, "Rank Data Command Not Found!");
         }
-        if (!PlayerData.isPEX()) {
-            getLogger().log(Level.SEVERE, "PermissionsEx REQUIRED!");
+        if (!PlayerData.isVaultLoaded()) {
+            getLogger().log(Level.SEVERE, "Vault Permissions Handler not found! Can't Enable!");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }

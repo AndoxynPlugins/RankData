@@ -4,9 +4,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.daboross.bukkitdev.playerdata.PData;
+import net.daboross.bukkitdev.playerdata.PlayerData;
 import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
-import ru.tehkode.permissions.PermissionUser;
 
 /**
  *
@@ -31,10 +32,10 @@ public class SurvivorChecker {
         int foundReady = 0;
         for (int i = 0; i < pDataList.length; i++) {
             PData current = pDataList[i];
-            PermissionUser permUser = current.getPermUser();
-            if (isReadyCheck(current, permUser)) {
+            Permission perm = PlayerData.getPermissionHandler();
+            if (isReadyCheck(perm, current)) {
                 foundReady++;
-                setSurvivor(permUser, current);
+                setSurvivor(perm, current);
             }
         }
         if (foundReady != 0) {
@@ -47,9 +48,9 @@ public class SurvivorChecker {
     private static final int hoursSpentOnline = 15;
     private static final int daysSinceJoin = 60;
 
-    private boolean isReadyCheck(PData pData, PermissionUser permUser) {
-        if (permUser != null) {
-            if (isCorrectGroup(permUser)) {
+    private boolean isReadyCheck(Permission p, PData pData) {
+        if (pData != null) {
+            if (isCorrectGroup(p, pData)) {
                 if (pData.joinedLastWithinDays(daysSinceOnlineAllowed)) {
                     if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn().time()) >= daysSinceJoin) {
                         if (TimeUnit.MILLISECONDS.toHours(pData.timePlayed()) >= hoursSpentOnline) {
@@ -65,15 +66,14 @@ public class SurvivorChecker {
         return false;
     }
 
-    private boolean isCorrectGroup(PermissionUser permUser) {
-        if (permUser.inGroup("Trusted", true) && !permUser.inGroup("Survivor", true)) {
+    private boolean isCorrectGroup(Permission p, PData pData) {
+        if (p.playerInGroup((String) null, pData.userName(), "Trusted") && !p.playerInGroup((String) null, pData.userName(), "Survivor")) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    private void setSurvivor(PermissionUser permUser, PData pData) {
-        AutoRanker.addSurvivor(pData, permUser, Bukkit.getServer().getConsoleSender());
+    private void setSurvivor(Permission p, PData pData) {
+        AutoRanker.addGroup(p, pData, "Survivor", Bukkit.getServer().getConsoleSender());
     }
 }
