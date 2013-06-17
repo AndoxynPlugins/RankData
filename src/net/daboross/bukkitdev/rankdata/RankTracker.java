@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author daboross
  */
-public class AutoRanker {
+public class RankTracker {
 
     public static void addGroup(PData pData, String groupName, CommandSender ranker) {
         addGroup(PlayerData.getPermissionHandler(), pData, groupName, ranker);

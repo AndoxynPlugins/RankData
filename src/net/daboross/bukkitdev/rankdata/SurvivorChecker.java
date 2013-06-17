@@ -74,6 +74,6 @@ public class SurvivorChecker {
     }
 
     private void setSurvivor(Permission p, PData pData) {
-        AutoRanker.addGroup(p, pData, "Survivor", Bukkit.getServer().getConsoleSender());
+        RankTracker.addGroup(p, pData, "Survivor", Bukkit.getServer().getConsoleSender());
     }
 }

@@ -67,7 +67,7 @@ public class RankDataCommandExecutor extends CommandExecutorBase implements Comm
             }
             PData pData = getPDataFromCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                AutoRanker.addGroup(pData, group, sender);
+                RankTracker.addGroup(pData, group, sender);
             }
         } else if (subCommand.startsWith("remove")) {
             String group = subCommand.substring(6);//6 because "remove" has a length of 6.
@@ -76,7 +76,7 @@ public class RankDataCommandExecutor extends CommandExecutorBase implements Comm
             }
             PData pData = getPDataFromCommand(sender, mainCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-//                AutoRanker.removeGroup(pData, group, sender);
+//                RankTracker.removeGroup(pData, group, sender);
                 sender.sendMessage("This command still needs to be implemented! Dabo was lazy while making this plugin, so now you can't remove people from groups!");
             }
         }
