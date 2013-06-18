@@ -1,83 +1,33 @@
 name: RankData
 main: net.daboross.bukkitdev.rankdata.RankData
-version: 2.0
+version: 2.1
 author: Dabo Ross
 prefix: RD
 description: This plugin does various data manipulation with Ranks
-depend: [PlayerData, PermissionsEx]
+depend: [PlayerData, Vault]
 commands:
-   rd:
-     description: This is the base command for Player Data.
-     usage: /<command> [subcommand] (You can use /<command> ? for list of sub commands)
-     aliases: [rankdata, rdata, rankd]
+    rd:
+        description: This is the base command for Player Data.
+        usage: /<command> [subcommand] (You can use /<command> ? for list of sub commands)
+        aliases: [rankdata, rdata, rankd]
 permissions:
-  rankdata.*:
-    description: Gives access to all BanData commands
-    children:
-      rankdata.help: true
-      rankdata.reloadsurvivor: true
-      rankdata.addgroup.*: true
-    default: false
-  rankdata.help:
-    description: Allows you to use /rd ?
-    default: false
-  rankdata.dhecksurvivors:
-    description: Allows you to use /rd checksurvivors
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.viewrecords:
-    description: Allows you to use group-adding commands.
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.trusted:
-    description: Allows you to use /rd addtrusted
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.survivor:
-    description: Allows you to use /rd addsurvivor
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.architect:
-    description: Allows you to use /rd addarchitect
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.technician:
-    description: Allows you to use /rd addtechnician
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.agent:
-    description: Allows you to use /rd addagent
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.spy:
-    description: Allows you to use /rd addspy
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.pvpmaster:
-    description: Allows you to use /rd addpvpmaster
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.signer:
-    description: Allows you to use /rd addsigner
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.spawner:
-    description: Allows you to use /rd addspawner
-    default: false
-    children:
-      contestdata.help: true
-  rankdata.addgroup.regionowneradder:
-    description: Allows you to use /rd addregionowneradder
-    default: false
-    children:
-      contestdata.help: true
+    rankdata.*:
+        description: Gives access to all BanData commands
+        children:
+            rankdata.help: true
+            rankdata.reloadsurvivor: true
+            rankdata.addgroup.*: true
+        default: false
+    rankdata.help:
+        description: Allows you to use /rd ?
+        default: false
+    rankdata.checksurvivors:
+        description: Allows you to use /rd checksurvivors
+        default: false
+        children:
+            rankdata.help: true
+    rankdata.viewrecords:
+        description: Allows you to use group-adding commands.
+        default: false
+        children:
+            rankdata.help: true
