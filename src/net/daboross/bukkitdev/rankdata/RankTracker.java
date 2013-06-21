@@ -16,36 +16,42 @@ import org.bukkit.command.CommandSender;
  */
 public class RankTracker {
 
-    public static void addGroup(PData pData, String groupName, CommandSender ranker) {
-        addGroup(PlayerData.getPermissionHandler(), pData, groupName, ranker);
+    public static void addGroup(PData pData, String group, CommandSender ranker) {
+        addGroup(PlayerData.getPermissionHandler(), pData, group, ranker);
+    }
+    public static void setGroups(PData pData, String[] groups, CommandSender ranker) {
+        setGroups(PlayerData.getPermissionHandler(), pData, groups, ranker);
+    }
+    public static void removeGroup(PData pData, String group, CommandSender ranker) {
+        removeGroup(PlayerData.getPermissionHandler(), pData, group, ranker);
     }
 
-    public static void addGroup(Permission permissionHandler, PData pData, String groupName, CommandSender ranker) {
-        if (permissionHandler == null || pData == null || groupName == null || ranker == null) {
+    public static void addGroup(Permission permissionHandler, PData pData, String group, CommandSender ranker) {
+        if (permissionHandler == null || pData == null || group == null || ranker == null) {
             throw new IllegalArgumentException("One or more null arguments");
         }
-        if (!permissionHandler.playerInGroup((String) null, pData.userName(), groupName)) {
-            permissionHandler.playerAddGroup((String) null, pData.userName(), groupName);
+        if (!permissionHandler.playerInGroup((String) null, pData.userName(), group)) {
+            permissionHandler.playerAddGroup((String) null, pData.userName(), group);
             List<String> rawData;
             if (pData.hasData("rankrecord")) {
                 rawData = new ArrayList<String>(Arrays.asList(pData.getData("rankrecord").getData()));
             } else {
                 rawData = new ArrayList<String>();
             }
-            rawData.add("ADD " + ranker.getName() + " " + groupName + " " + System.currentTimeMillis());
+            rawData.add("ADD " + ranker.getName() + " " + group + " " + System.currentTimeMillis());
             Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
             pData.addData(finalData);
-            ranker.sendMessage(ColorList.NUMBER + groupName + ColorList.MAIN + " has been added to " + ColorList.NAME + pData.userName());
+            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has been added to " + ColorList.NAME + pData.userName());
         } else {
-            ranker.sendMessage(ColorList.NUMBER + groupName + ColorList.MAIN + " has already been added to " + ColorList.NAME + pData.userName() + ColorList.MAIN + "...");
+            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has already been added to " + ColorList.NAME + pData.userName() + ColorList.MAIN + "...");
         }
     }
 
-    public static void setRanks(Permission permissionHandler, PData pData, String[] permissionGroups, CommandSender ranker) {
+    public static void setGroups(Permission permissionHandler, PData pData, String[] groups, CommandSender ranker) {
         for (String group : permissionHandler.getPlayerGroups((String) null, pData.userName())) {
             permissionHandler.playerRemoveGroup((String) null, pData.userName(), group);
         }
-        for (String group : permissionGroups) {
+        for (String group : groups) {
             permissionHandler.playerAddGroup((String) null, pData.userName(), group);
         }
         List<String> rawData;
@@ -55,8 +61,29 @@ public class RankTracker {
             rawData = new ArrayList<String>();
         }
 
-        rawData.add("SET " + ranker.getName() + " " + Arrays.asList(permissionGroups) + " " + System.currentTimeMillis());
+        rawData.add("SET " + ranker.getName() + " " + Arrays.toString(groups) + " " + System.currentTimeMillis());
         Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
         pData.addData(finalData);
+    }
+
+    public static void removeGroup(Permission permissionHandler, PData pData, String group, CommandSender ranker) {
+        if (permissionHandler == null || pData == null || group == null || ranker == null) {
+            throw new IllegalArgumentException("One or more null arguments");
+        }
+        if (permissionHandler.playerInGroup((String) null, pData.userName(), group)) {
+            permissionHandler.playerRemoveGroup((String) null, pData.userName(), group);
+            List<String> rawData;
+            if (pData.hasData("rankrecord")) {
+                rawData = new ArrayList<String>(Arrays.asList(pData.getData("rankrecord").getData()));
+            } else {
+                rawData = new ArrayList<String>();
+            }
+            rawData.add("REMOVE " + ranker.getName() + " " + group + " " + System.currentTimeMillis());
+            Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
+            pData.addData(finalData);
+            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has been removed from " + ColorList.NAME + pData.userName());
+        } else {
+            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has already been removed from " + ColorList.NAME + pData.userName() + ColorList.MAIN + "...");
+        }
     }
 }

@@ -26,18 +26,16 @@ public class RankData extends JavaPlugin {
         } else if (playerDataPlugin instanceof PlayerData) {
             pDataM = (PlayerData) playerDataPlugin;
         } else {
-            getLogger().log(Level.SEVERE, "PlayerData Not Instance Of Player Data!");
+            getLogger().log(Level.SEVERE, "PlayerData Not instanceof PlayerData!");
         }
         if (pDataM == null) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         commandExecutor = new RankDataCommandExecutor(this);
-        PluginCommand rd = getCommand("rd");
-        if (rd != null) {
-            rd.setExecutor(commandExecutor);
-        } else {
-            getLogger().log(Level.SEVERE, "Rank Data Command Not Found!");
+        PluginCommand rankdata = getCommand("rankdata:rankdata");
+        if (rankdata != null) {
+            rankdata.setExecutor(commandExecutor);
         }
         if (!PlayerData.isVaultLoaded()) {
             getLogger().log(Level.SEVERE, "Vault Permissions Handler not found! Can't Enable!");

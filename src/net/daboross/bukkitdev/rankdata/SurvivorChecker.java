@@ -1,5 +1,6 @@
 package net.daboross.bukkitdev.rankdata;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,10 +29,10 @@ public class SurvivorChecker {
         if (handler == null) {
             return;
         }
-        PData[] pDataList = rDataMain.getPDataMain().getHandler().getAllPDatas();
+        List<PData> pDataList = rDataMain.getPDataMain().getHandler().getAllPDatas();
         int foundReady = 0;
-        for (int i = 0; i < pDataList.length; i++) {
-            PData current = pDataList[i];
+        for (int i = 0; i < pDataList.size(); i++) {
+            PData current = pDataList.get(i);
             Permission perm = PlayerData.getPermissionHandler();
             if (isReadyCheck(perm, current)) {
                 foundReady++;

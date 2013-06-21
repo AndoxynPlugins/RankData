@@ -6,10 +6,10 @@ prefix: RD
 description: This plugin does various data manipulation with Ranks
 depend: [PlayerData, Vault]
 commands:
-    rd:
+    rankdata:rankdata:
         description: This is the base command for Player Data.
         usage: /<command> [subcommand] (You can use /<command> ? for list of sub commands)
-        aliases: [rankdata, rdata, rankd]
+        aliases: [rankdata, rdata, rankd, rd]
 permissions:
     rankdata.*:
         description: Gives access to all BanData commands
