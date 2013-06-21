@@ -35,7 +35,7 @@ public class RankData extends JavaPlugin {
         commandExecutor = new RankDataCommandExecutor(this);
         PluginCommand rankdata = getCommand("rankdata:rankdata");
         if (rankdata != null) {
-            rankdata.setExecutor(commandExecutor);
+            commandExecutor.registerCommand(rankdata);
         }
         if (!PlayerData.isVaultLoaded()) {
             getLogger().log(Level.SEVERE, "Vault Permissions Handler not found! Can't Enable!");
@@ -44,6 +44,7 @@ public class RankData extends JavaPlugin {
         }
         survivorChecker = new SurvivorChecker(this);
         Runnable r = new Runnable() {
+            @Override
             public void run() {
                 survivorChecker.reload();
             }
