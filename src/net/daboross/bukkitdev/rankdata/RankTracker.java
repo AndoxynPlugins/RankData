@@ -41,9 +41,9 @@ public class RankTracker {
             rawData.add("ADD " + ranker.getName() + " " + group + " " + System.currentTimeMillis());
             Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
             pData.addData(finalData);
-            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has been added to " + ColorList.NAME + pData.userName());
+            ranker.sendMessage(ColorList.DATA + group + ColorList.REG + " has been added to " + ColorList.NAME + pData.userName());
         } else {
-            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has already been added to " + ColorList.NAME + pData.userName() + ColorList.MAIN + "...");
+            ranker.sendMessage(ColorList.DATA + group + ColorList.REG + " has already been added to " + ColorList.NAME + pData.userName() + ColorList.REG + "...");
         }
     }
 
@@ -81,9 +81,9 @@ public class RankTracker {
             rawData.add("REMOVE " + ranker.getName() + " " + group + " " + System.currentTimeMillis());
             Data finalData = new Data("rankrecord", rawData.toArray(new String[rawData.size()]));
             pData.addData(finalData);
-            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has been removed from " + ColorList.NAME + pData.userName());
+            ranker.sendMessage(ColorList.DATA + group + ColorList.REG + " has been removed from " + ColorList.NAME + pData.userName());
         } else {
-            ranker.sendMessage(ColorList.NUMBER + group + ColorList.MAIN + " has already been removed from " + ColorList.NAME + pData.userName() + ColorList.MAIN + "...");
+            ranker.sendMessage(ColorList.DATA + group + ColorList.REG + " has already been removed from " + ColorList.NAME + pData.userName() + ColorList.REG + "...");
         }
     }
 }

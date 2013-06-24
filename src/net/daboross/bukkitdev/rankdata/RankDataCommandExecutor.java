@@ -54,11 +54,11 @@ public class RankDataCommandExecutor implements SubCommandHandler {
         commandExecutorBase.addSubCommand(new SubCommand("reload", true, "rankdata.reload", new String[]{"Player"}, "Reconfigures rankdata after a permissions group change", new SubCommandHandler() {
             @Override
             public void runCommand(CommandSender sender, Command baseCommand, String baseCommandLabel, SubCommand subCommand, String subCommandLabel, String[] subCommandArgs) {
-                sender.sendMessage(ColorList.MAIN + "Reloading RankData");
-                rDataM.getLogger().log(Level.INFO, "{0}Reloading RankData", ColorList.MAIN);
+                sender.sendMessage(ColorList.REG + "Reloading RankData");
+                rDataM.getLogger().log(Level.INFO, "{0}Reloading RankData", ColorList.REG);
                 rDataM.onEnable();
-                rDataM.getLogger().log(Level.INFO, "{0}RankData Reloaded", ColorList.MAIN);
-                sender.sendMessage(ColorList.MAIN + "RankData Reloaded");
+                rDataM.getLogger().log(Level.INFO, "{0}RankData Reloaded", ColorList.REG);
+                sender.sendMessage(ColorList.REG + "RankData Reloaded");
             }
         }));
     }
@@ -118,19 +118,19 @@ public class RankDataCommandExecutor implements SubCommandHandler {
     @Override
     public void runCommand(CommandSender sender, Command baseCommand, String baseCommandLabel, SubCommand subCommand, String subCommandLabel, String[] subCommandArgs) {
         if (subCommand.getName().equals("checksurvivors")) {
-            sender.sendMessage(ColorList.MAIN + "Checking Survivor Info");
+            sender.sendMessage(ColorList.REG + "Checking for survivor");
             rDataM.getSurvivorChecker().reload();
-            sender.sendMessage(ColorList.MAIN + "Done Checking. Results sent to logger");
+            sender.sendMessage(ColorList.REG + "Done checking. Results sent to console");
         } else if (subCommand.getName().equals("viewrecords")) {
             PData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
                 Data d = pData.getData("rankrecord");
                 if (d == null) {
-                    sender.sendMessage(ColorList.MAIN + "No Rank Record found for Player: " + ColorList.NAME + pData.userName());
+                    sender.sendMessage(ColorList.REG + "No rank record found for player '" + ColorList.NAME + pData.userName() + ColorList.REG + "'");
                     return;
                 }
                 String[] datatosend = d.getData();
-                sender.sendMessage(ColorList.MAIN + "Data on player " + ColorList.NAME + pData.userName() + ":");
+                sender.sendMessage(ColorList.TOP_SEPERATOR + " -- " + ColorList.NAME + pData.userName() +ColorList.TOP+"'s Rank Data"+ColorList.TOP_SEPERATOR+" --");
                 for (int i = 0; i < datatosend.length; i++) {
                     datatosend[i] = formatDataLine(datatosend[i]);
                 }
@@ -142,10 +142,10 @@ public class RankDataCommandExecutor implements SubCommandHandler {
     private static String formatDataLine(String dataline) {
         String[] data = dataline.split(" ");
         if (data.length < 4) {
-            return "Invalid Data '" + dataline + "'";
+            return "Invalid data: '" + dataline + "'";
         }
         StringBuilder resultBuilder = new StringBuilder();
-        resultBuilder.append(ColorList.NAME).append(data[1]).append(ColorList.MAIN);
+        resultBuilder.append(ColorList.NAME).append(data[1]).append(ColorList.REG);
         if (data[0].equalsIgnoreCase("set")) {
             resultBuilder.append(" set ");
         } else if (data[0].equalsIgnoreCase("add")) {
@@ -162,23 +162,23 @@ public class RankDataCommandExecutor implements SubCommandHandler {
             date = -1;
         }
         String dateString = date == -1 ? "UnknownDate:" + date : new Date(date).toString();
-        return resultBuilder.append(ColorList.NUMBER).append(data[2]).append(ColorList.MAIN).append(" at ").append(ColorList.NUMBER).append(dateString).toString();
+        return resultBuilder.append(ColorList.DATA).append(data[2]).append(ColorList.REG).append(" at ").append(ColorList.DATA).append(dateString).toString();
     }
 
     private PData getPDataFromCommand(CommandSender sender, SubCommand subCommand, String baseCommandLabel, String subCommandLabel, String[] subCommandArgs) {
         if (subCommandArgs.length < 1) {
-            sender.sendMessage(ColorList.ILLEGALARGUMENT + "Please Specify a Player");
+            sender.sendMessage(ColorList.ERR + "Please specify a player");
             sender.sendMessage(subCommand.getHelpMessage(baseCommandLabel, subCommandLabel));
             return null;
         }
         if (subCommandArgs.length > 1) {
-            sender.sendMessage(ColorList.ILLEGALARGUMENT + "Please only use one argument");
+            sender.sendMessage(ColorList.ERR + "Please only use one argument");
             sender.sendMessage(subCommand.getHelpMessage(baseCommandLabel, subCommandLabel));
             return null;
         }
         PData pData = playerDataHandler.getPData(subCommandArgs[0]);
         if (pData == null) {
-            sender.sendMessage(ColorList.ERROR + "Player: " + ColorList.ERROR_ARGS + subCommandArgs[0] + ColorList.ERROR + " not found!");
+            sender.sendMessage(ColorList.ERR + "Player '" + ColorList.ERR_ARGS + subCommandArgs[0] + ColorList.ERR + "' not found");
             return null;
         }
         return pData;

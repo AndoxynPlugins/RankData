@@ -1,6 +1,6 @@
 name: RankData
 main: net.daboross.bukkitdev.rankdata.RankData
-version: 2.1
+version: 2.1.1
 author: Dabo Ross
 prefix: RD
 description: This plugin does various data manipulation with Ranks
