@@ -130,7 +130,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
                     return;
                 }
                 String[] datatosend = d.getData();
-                sender.sendMessage(ColorList.TOP_SEPERATOR + " -- " + ColorList.NAME + pData.userName() +ColorList.TOP+"'s Rank Data"+ColorList.TOP_SEPERATOR+" --");
+                sender.sendMessage(ColorList.TOP_SEPERATOR + " -- " + ColorList.NAME + pData.userName() + ColorList.TOP + "'s Rank Data" + ColorList.TOP_SEPERATOR + " --");
                 for (int i = 0; i < datatosend.length; i++) {
                     datatosend[i] = formatDataLine(datatosend[i]);
                 }

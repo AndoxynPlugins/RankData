@@ -19,9 +19,11 @@ public class RankTracker {
     public static void addGroup(PData pData, String group, CommandSender ranker) {
         addGroup(PlayerData.getPermissionHandler(), pData, group, ranker);
     }
+
     public static void setGroups(PData pData, String[] groups, CommandSender ranker) {
         setGroups(PlayerData.getPermissionHandler(), pData, groups, ranker);
     }
+
     public static void removeGroup(PData pData, String group, CommandSender ranker) {
         removeGroup(PlayerData.getPermissionHandler(), pData, group, ranker);
     }
