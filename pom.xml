@@ -2,6 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.daboross.bukkitdev.rankdata</groupId>
     <artifactId>RankData</artifactId>
+    <packaging>jar</packaging>
     <version>1.0</version>
     <name>RankData</name>
     <repositories>
@@ -27,6 +28,9 @@
             </plugin>
         </plugins>
     </build>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
