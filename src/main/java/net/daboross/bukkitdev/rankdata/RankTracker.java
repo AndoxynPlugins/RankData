@@ -3,7 +3,7 @@ package net.daboross.bukkitdev.rankdata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.daboross.bukkitdev.commandexecutorbase.ColorList;
+import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.ColorList;
 import net.daboross.bukkitdev.playerdata.Data;
 import net.daboross.bukkitdev.playerdata.PData;
 import net.daboross.bukkitdev.playerdata.PlayerData;
