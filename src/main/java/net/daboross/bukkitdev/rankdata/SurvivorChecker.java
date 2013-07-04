@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.daboross.bukkitdev.playerdata.PlayerDataBukkit;
 import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
 import net.daboross.bukkitdev.playerdata.api.PlayerData;
 import net.daboross.bukkitdev.playerdata.api.PlayerHandler;
@@ -17,20 +16,20 @@ import org.bukkit.Bukkit;
  */
 public class SurvivorChecker {
 
-    private RankData rDataMain;
+    private RankDataBukkit rankDataBukkit;
 
-    public SurvivorChecker(RankData main) {
-        this.rDataMain = main;
+    public SurvivorChecker(RankDataBukkit main) {
+        this.rankDataBukkit = main;
     }
 
     protected void reload() {
-        Logger l = rDataMain.getLogger();
-        rDataMain.getLogger().info("Starting Survivor Check");
-        PlayerHandler handler = rDataMain.getPDataMain().getHandler();
+        Logger l = rankDataBukkit.getLogger();
+        rankDataBukkit.getLogger().info("Starting Survivor Check");
+        PlayerHandler handler = rankDataBukkit.getPDataMain().getHandler();
         if (handler == null) {
             return;
         }
-        List<? extends PlayerData> pDataList = rDataMain.getPDataMain().getHandler().getAllPlayerDatas();
+        List<? extends PlayerData> pDataList = rankDataBukkit.getPDataMain().getHandler().getAllPlayerDatas();
         int foundReady = 0;
         for (int i = 0; i < pDataList.size(); i++) {
             PlayerData current = pDataList.get(i);
@@ -59,7 +58,7 @@ public class SurvivorChecker {
                         if (TimeUnit.MILLISECONDS.toHours(pd.getTimePlayed()) >= hoursSpentOnline) {
                             return true;
                         } else {
-                            rDataMain.getLogger().log(Level.FINER, "{0} would be ready for Survivor, but time spent online is not enough", pd.getUsername());
+                            rankDataBukkit.getLogger().log(Level.FINER, "{0} would be ready for Survivor, but time spent online is not enough", pd.getUsername());
                             return false;
                         }
                     }

@@ -24,13 +24,13 @@ import org.bukkit.command.PluginCommand;
 public class RankDataCommandExecutor implements SubCommandHandler {
 
     private final CommandExecutorBase commandExecutorBase;
-    private final RankData rDataM;
+    private final RankDataBukkit rankDataBukkit;
     private final PlayerHandler playerDataHandler;
     private final Set<String> groups;
 
-    protected RankDataCommandExecutor(RankData mainPlugin) {
-        rDataM = mainPlugin;
-        playerDataHandler = rDataM.getPDataMain().getHandler();
+    protected RankDataCommandExecutor(RankDataBukkit rankDataBukkit) {
+        this.rankDataBukkit = rankDataBukkit;
+        playerDataHandler = rankDataBukkit.getPDataMain().getHandler();
         groups = Collections.unmodifiableSet(findGroups());
         commandExecutorBase = new CommandExecutorBase("rankdata.help");
         initRegCommands();
@@ -54,9 +54,9 @@ public class RankDataCommandExecutor implements SubCommandHandler {
             @Override
             public void runCommand(CommandSender sender, Command baseCommand, String baseCommandLabel, SubCommand subCommand, String subCommandLabel, String[] subCommandArgs) {
                 sender.sendMessage(ColorList.REG + "Reloading RankData");
-                rDataM.getLogger().log(Level.INFO, "{0}Reloading RankData", ColorList.REG);
-                rDataM.onEnable();
-                rDataM.getLogger().log(Level.INFO, "{0}RankData Reloaded", ColorList.REG);
+                rankDataBukkit.getLogger().log(Level.INFO, "{0}Reloading RankData", ColorList.REG);
+                rankDataBukkit.onEnable();
+                rankDataBukkit.getLogger().log(Level.INFO, "{0}RankData Reloaded", ColorList.REG);
                 sender.sendMessage(ColorList.REG + "RankData Reloaded");
             }
         }));
@@ -118,7 +118,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
     public void runCommand(CommandSender sender, Command baseCommand, String baseCommandLabel, SubCommand subCommand, String subCommandLabel, String[] subCommandArgs) {
         if (subCommand.getName().equals("checksurvivors")) {
             sender.sendMessage(ColorList.REG + "Checking for survivor");
-            rDataM.getSurvivorChecker().reload();
+            rankDataBukkit.getSurvivorChecker().reload();
             sender.sendMessage(ColorList.REG + "Done checking. Results sent to console");
         } else if (subCommand.getName().equals("viewrecords")) {
             PlayerData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);

@@ -2,7 +2,6 @@ package net.daboross.bukkitdev.rankdata;
 
 import java.util.logging.Level;
 import net.daboross.bukkitdev.playerdata.PlayerDataBukkit;
-import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
@@ -12,10 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author daboross
  */
-public class RankData extends JavaPlugin {
+public class RankDataBukkit extends JavaPlugin {
 
-    private static RankData currentInstance;
-    private PlayerDataBukkit pDataM;
+    private static RankDataBukkit currentInstance;
+    private PlayerDataBukkit playerDataBukkit;
     private RankDataCommandExecutor commandExecutor;
     private SurvivorChecker survivorChecker;
 
@@ -25,11 +24,11 @@ public class RankData extends JavaPlugin {
         if (playerDataPlugin == null) {
             getLogger().log(Level.SEVERE, "PlayerData Not Found!");
         } else if (playerDataPlugin instanceof PlayerDataBukkit) {
-            pDataM = (PlayerDataBukkit) playerDataPlugin;
+            playerDataBukkit = (PlayerDataBukkit) playerDataPlugin;
         } else {
             getLogger().log(Level.SEVERE, "PlayerData Not instanceof PlayerData!");
         }
-        if (pDataM == null) {
+        if (playerDataBukkit == null) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -38,7 +37,7 @@ public class RankData extends JavaPlugin {
         if (rankdata != null) {
             commandExecutor.registerCommand(rankdata);
         }
-        if (!PlayerDataStatic.isPermissionLoaded()) {
+        if (!playerDataBukkit.isPermissionLoaded()) {
             getLogger().log(Level.SEVERE, "Permission Handler not found! Can't Enable!");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -52,12 +51,12 @@ public class RankData extends JavaPlugin {
         currentInstance = null;
     }
 
-    protected static RankData getCurrentInstance() {
+    protected static RankDataBukkit getCurrentInstance() {
         return currentInstance;
     }
 
     protected PlayerDataBukkit getPDataMain() {
-        return pDataM;
+        return playerDataBukkit;
     }
 
     protected SurvivorChecker getSurvivorChecker() {
