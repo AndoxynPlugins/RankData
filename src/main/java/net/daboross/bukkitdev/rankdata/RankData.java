@@ -1,7 +1,8 @@
 package net.daboross.bukkitdev.rankdata;
 
 import java.util.logging.Level;
-import net.daboross.bukkitdev.playerdata.PlayerData;
+import net.daboross.bukkitdev.playerdata.PlayerDataBukkit;
+import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
@@ -14,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RankData extends JavaPlugin {
 
     private static RankData currentInstance;
-    private PlayerData pDataM;
+    private PlayerDataBukkit pDataM;
     private RankDataCommandExecutor commandExecutor;
     private SurvivorChecker survivorChecker;
 
@@ -23,8 +24,8 @@ public class RankData extends JavaPlugin {
         Plugin playerDataPlugin = Bukkit.getPluginManager().getPlugin("PlayerData");
         if (playerDataPlugin == null) {
             getLogger().log(Level.SEVERE, "PlayerData Not Found!");
-        } else if (playerDataPlugin instanceof PlayerData) {
-            pDataM = (PlayerData) playerDataPlugin;
+        } else if (playerDataPlugin instanceof PlayerDataBukkit) {
+            pDataM = (PlayerDataBukkit) playerDataPlugin;
         } else {
             getLogger().log(Level.SEVERE, "PlayerData Not instanceof PlayerData!");
         }
@@ -37,19 +38,12 @@ public class RankData extends JavaPlugin {
         if (rankdata != null) {
             commandExecutor.registerCommand(rankdata);
         }
-        if (!PlayerData.isVaultLoaded()) {
-            getLogger().log(Level.SEVERE, "Vault Permissions Handler not found! Can't Enable!");
+        if (!PlayerDataStatic.isPermissionLoaded()) {
+            getLogger().log(Level.SEVERE, "Permission Handler not found! Can't Enable!");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        survivorChecker = new SurvivorChecker(this);
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                survivorChecker.reload();
-            }
-        };
-        pDataM.getHandler().runAfterLoad(r);
+        survivorChecker.reload();
         currentInstance = this;
     }
 
@@ -62,7 +56,7 @@ public class RankData extends JavaPlugin {
         return currentInstance;
     }
 
-    protected PlayerData getPDataMain() {
+    protected PlayerDataBukkit getPDataMain() {
         return pDataM;
     }
 

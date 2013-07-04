@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.daboross.bukkitdev.playerdata.PData;
-import net.daboross.bukkitdev.playerdata.PlayerData;
-import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
+import net.daboross.bukkitdev.playerdata.PlayerDataBukkit;
+import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
+import net.daboross.bukkitdev.playerdata.api.PlayerData;
+import net.daboross.bukkitdev.playerdata.api.PlayerHandler;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 
@@ -25,15 +26,15 @@ public class SurvivorChecker {
     protected void reload() {
         Logger l = rDataMain.getLogger();
         rDataMain.getLogger().info("Starting Survivor Check");
-        PlayerDataHandler handler = rDataMain.getPDataMain().getHandler();
+        PlayerHandler handler = rDataMain.getPDataMain().getHandler();
         if (handler == null) {
             return;
         }
-        List<PData> pDataList = rDataMain.getPDataMain().getHandler().getAllPDatas();
+        List<? extends PlayerData> pDataList = rDataMain.getPDataMain().getHandler().getAllPlayerDatas();
         int foundReady = 0;
         for (int i = 0; i < pDataList.size(); i++) {
-            PData current = pDataList.get(i);
-            Permission perm = PlayerData.getPermissionHandler();
+            PlayerData current = pDataList.get(i);
+            Permission perm = PlayerDataStatic.getPermissionHandler();
             if (isReadyCheck(perm, current)) {
                 foundReady++;
                 setSurvivor(perm, current);
@@ -46,18 +47,19 @@ public class SurvivorChecker {
         }
     }
     private static final int daysSinceOnlineAllowed = 4;
+    private static final long daysSinceOnlineAllowedInMillis = TimeUnit.DAYS.toMillis(daysSinceOnlineAllowed);
     private static final int hoursSpentOnline = 15;
     private static final int daysSinceJoin = 60;
 
-    private boolean isReadyCheck(Permission p, PData pData) {
-        if (pData != null) {
-            if (isCorrectGroup(p, pData)) {
-                if (pData.joinedLastWithinDays(daysSinceOnlineAllowed)) {
-                    if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pData.getFirstLogIn().time()) >= daysSinceJoin) {
-                        if (TimeUnit.MILLISECONDS.toHours(pData.timePlayed()) >= hoursSpentOnline) {
+    private boolean isReadyCheck(Permission p, PlayerData pd) {
+        if (pd != null) {
+            if (isCorrectGroup(p, pd)) {
+                if (System.currentTimeMillis() - pd.getLastSeen() >= daysSinceOnlineAllowedInMillis) {
+                    if (TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - pd.getAllLogins().get(0).getDate()) >= daysSinceJoin) {
+                        if (TimeUnit.MILLISECONDS.toHours(pd.getTimePlayed()) >= hoursSpentOnline) {
                             return true;
                         } else {
-                            rDataMain.getLogger().log(Level.FINER, "{0} would be ready for Survivor, but time spent online is not enough", pData.userName());
+                            rDataMain.getLogger().log(Level.FINER, "{0} would be ready for Survivor, but time spent online is not enough", pd.getUsername());
                             return false;
                         }
                     }
@@ -67,14 +69,14 @@ public class SurvivorChecker {
         return false;
     }
 
-    private boolean isCorrectGroup(Permission p, PData pData) {
-        if (p.playerInGroup((String) null, pData.userName(), "Trusted") && !p.playerInGroup((String) null, pData.userName(), "Survivor")) {
+    private boolean isCorrectGroup(Permission p, PlayerData pd) {
+        if (p.playerInGroup((String) null, pd.getUsername(), "Trusted") && !p.playerInGroup((String) null, pd.getUsername(), "Survivor")) {
             return true;
         }
         return false;
     }
 
-    private void setSurvivor(Permission p, PData pData) {
-        RankTracker.addGroup(p, pData, "Survivor", Bukkit.getServer().getConsoleSender());
+    private void setSurvivor(Permission p, PlayerData pd) {
+        RankTracker.addGroup(p, pd, "Survivor", Bukkit.getServer().getConsoleSender());
     }
 }

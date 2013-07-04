@@ -10,10 +10,9 @@ import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.CommandEx
 import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.ColorList;
 import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.SubCommand;
 import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.SubCommandHandler;
-import net.daboross.bukkitdev.playerdata.Data;
-import net.daboross.bukkitdev.playerdata.PData;
-import net.daboross.bukkitdev.playerdata.PlayerData;
-import net.daboross.bukkitdev.playerdata.PlayerDataHandler;
+import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
+import net.daboross.bukkitdev.playerdata.api.PlayerData;
+import net.daboross.bukkitdev.playerdata.api.PlayerHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -26,7 +25,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
 
     private final CommandExecutorBase commandExecutorBase;
     private final RankData rDataM;
-    private final PlayerDataHandler playerDataHandler;
+    private final PlayerHandler playerDataHandler;
     private final Set<String> groups;
 
     protected RankDataCommandExecutor(RankData mainPlugin) {
@@ -45,7 +44,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
     }
 
     private Set<String> findGroups() {
-        return new HashSet<String>(Arrays.asList(PlayerData.getPermissionHandler().getGroups()));
+        return new HashSet<String>(Arrays.asList(PlayerDataStatic.getPermissionHandler().getGroups()));
     }
 
     private void initRegCommands() {
@@ -72,7 +71,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
                         sender.sendMessage("This group doesn't exist? This is an error with RankData! Try reloading it with /rd reload!");
                         return;
                     }
-                    PData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
+                    PlayerData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
                     if (pData != null) {
                         RankTracker.addGroup(pData, group, sender);
                     }
@@ -89,7 +88,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
                     if (!groups.contains(group)) {
                         sender.sendMessage("This group doesn't exist? This is an error with RankData! Try reloading it with /rd reload!");
                     }
-                    PData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
+                    PlayerData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
                     if (pData != null) {
                         RankTracker.removeGroup(pData, group, sender);
                     }
@@ -106,7 +105,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
                     if (!groups.contains(group)) {
                         sender.sendMessage("This group doesn't exist? This is an error with RankData! Try reloading it with /rd reload!");
                     }
-                    PData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
+                    PlayerData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
                     if (pData != null) {
                         RankTracker.setGroups(pData, new String[]{group}, sender);
                     }
@@ -122,19 +121,18 @@ public class RankDataCommandExecutor implements SubCommandHandler {
             rDataM.getSurvivorChecker().reload();
             sender.sendMessage(ColorList.REG + "Done checking. Results sent to console");
         } else if (subCommand.getName().equals("viewrecords")) {
-            PData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
+            PlayerData pData = getPDataFromCommand(sender, subCommand, baseCommandLabel, subCommandLabel, subCommandArgs);
             if (pData != null) {
-                Data d = pData.getData("rankrecord");
-                if (d == null) {
-                    sender.sendMessage(ColorList.REG + "No rank record found for player '" + ColorList.NAME + pData.userName() + ColorList.REG + "'");
+                String[] rankData = pData.getExtraData("rankrecord");
+                if (rankData == null) {
+                    sender.sendMessage(ColorList.REG + "No rank record found for player '" + ColorList.NAME + pData.getUsername() + ColorList.REG + "'");
                     return;
                 }
-                String[] datatosend = d.getData();
-                sender.sendMessage(ColorList.TOP_SEPERATOR + " -- " + ColorList.NAME + pData.userName() + ColorList.TOP + "'s Rank Data" + ColorList.TOP_SEPERATOR + " --");
-                for (int i = 0; i < datatosend.length; i++) {
-                    datatosend[i] = formatDataLine(datatosend[i]);
+                sender.sendMessage(ColorList.TOP_SEPERATOR + " -- " + ColorList.NAME + pData.getUsername() + ColorList.TOP + "'s Rank Data" + ColorList.TOP_SEPERATOR + " --");
+                for (int i = 0; i < rankData.length; i++) {
+                    rankData[i] = formatDataLine(rankData[i]);
                 }
-                sender.sendMessage(datatosend);
+                sender.sendMessage(rankData);
             }
         }
     }
@@ -165,7 +163,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
         return resultBuilder.append(ColorList.DATA).append(data[2]).append(ColorList.REG).append(" at ").append(ColorList.DATA).append(dateString).toString();
     }
 
-    private PData getPDataFromCommand(CommandSender sender, SubCommand subCommand, String baseCommandLabel, String subCommandLabel, String[] subCommandArgs) {
+    private PlayerData getPDataFromCommand(CommandSender sender, SubCommand subCommand, String baseCommandLabel, String subCommandLabel, String[] subCommandArgs) {
         if (subCommandArgs.length < 1) {
             sender.sendMessage(ColorList.ERR + "Please specify a player");
             sender.sendMessage(subCommand.getHelpMessage(baseCommandLabel, subCommandLabel));
@@ -176,7 +174,7 @@ public class RankDataCommandExecutor implements SubCommandHandler {
             sender.sendMessage(subCommand.getHelpMessage(baseCommandLabel, subCommandLabel));
             return null;
         }
-        PData pData = playerDataHandler.getPData(subCommandArgs[0]);
+        PlayerData pData = playerDataHandler.getPlayerDataPartial(subCommandArgs[0]);
         if (pData == null) {
             sender.sendMessage(ColorList.ERR + "Player '" + ColorList.ERR_ARGS + subCommandArgs[0] + ColorList.ERR + "' not found");
             return null;
