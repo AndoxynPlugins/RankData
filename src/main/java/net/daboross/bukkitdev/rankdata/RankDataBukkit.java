@@ -42,6 +42,7 @@ public class RankDataBukkit extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        survivorChecker = new SurvivorChecker(this);
         survivorChecker.reload();
         currentInstance = this;
     }
