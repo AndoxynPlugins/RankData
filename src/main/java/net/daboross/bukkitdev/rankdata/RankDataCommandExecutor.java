@@ -22,12 +22,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
-import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.CommandExecutorBase;
-import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.ColorList;
-import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.SubCommand;
-import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.SubCommandHandler;
-import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
+import net.daboross.bukkitdev.commandexecutorbase.ColorList;
+import net.daboross.bukkitdev.commandexecutorbase.CommandExecutorBase;
+import net.daboross.bukkitdev.commandexecutorbase.SubCommand;
+import net.daboross.bukkitdev.commandexecutorbase.SubCommandHandler;
 import net.daboross.bukkitdev.playerdata.api.PlayerData;
+import net.daboross.bukkitdev.playerdata.api.PlayerDataStatic;
 import net.daboross.bukkitdev.playerdata.api.PlayerHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -40,13 +40,13 @@ import org.bukkit.command.PluginCommand;
 public class RankDataCommandExecutor implements SubCommandHandler {
 
     private final CommandExecutorBase commandExecutorBase;
-    private final RankDataBukkit rankDataBukkit;
+    private final RankDataPlugin rankDataBukkit;
     private final PlayerHandler playerDataHandler;
     private final Set<String> groups;
 
-    protected RankDataCommandExecutor(RankDataBukkit rankDataBukkit) {
+    protected RankDataCommandExecutor(RankDataPlugin rankDataBukkit) {
         this.rankDataBukkit = rankDataBukkit;
-        playerDataHandler = rankDataBukkit.getPDataMain().getHandler();
+        playerDataHandler = rankDataBukkit.getPlayerDataPlugin().getHandler();
         groups = Collections.unmodifiableSet(findGroups());
         commandExecutorBase = new CommandExecutorBase("rankdata.help");
         initRegCommands();

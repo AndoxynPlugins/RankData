@@ -19,9 +19,9 @@ package net.daboross.bukkitdev.rankdata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
-import net.daboross.bukkitdev.playerdata.libraries.commandexecutorbase.ColorList;
+import net.daboross.bukkitdev.commandexecutorbase.ColorList;
 import net.daboross.bukkitdev.playerdata.api.PlayerData;
+import net.daboross.bukkitdev.playerdata.api.PlayerDataStatic;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.command.CommandSender;
 

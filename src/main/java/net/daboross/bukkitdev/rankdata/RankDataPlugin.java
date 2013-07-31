@@ -16,21 +16,23 @@
  */
 package net.daboross.bukkitdev.rankdata;
 
+import java.io.IOException;
 import java.util.logging.Level;
-import net.daboross.bukkitdev.playerdata.PlayerDataBukkit;
+import net.daboross.bukkitdev.playerdata.api.PlayerDataPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.MetricsLite;
 
 /**
  *
  * @author daboross
  */
-public class RankDataBukkit extends JavaPlugin {
+public class RankDataPlugin extends JavaPlugin {
 
-    private static RankDataBukkit currentInstance;
-    private PlayerDataBukkit playerDataBukkit;
+    private static RankDataPlugin currentInstance;
+    private PlayerDataPlugin playerDataBukkit;
     private RankDataCommandExecutor commandExecutor;
     private SurvivorChecker survivorChecker;
 
@@ -39,8 +41,8 @@ public class RankDataBukkit extends JavaPlugin {
         Plugin playerDataPlugin = Bukkit.getPluginManager().getPlugin("PlayerData");
         if (playerDataPlugin == null) {
             getLogger().log(Level.SEVERE, "PlayerData Not Found!");
-        } else if (playerDataPlugin instanceof PlayerDataBukkit) {
-            playerDataBukkit = (PlayerDataBukkit) playerDataPlugin;
+        } else if (playerDataPlugin instanceof PlayerDataPlugin) {
+            playerDataBukkit = (PlayerDataPlugin) playerDataPlugin;
         } else {
             getLogger().log(Level.SEVERE, "PlayerData Not instanceof PlayerData!");
         }
@@ -61,6 +63,11 @@ public class RankDataBukkit extends JavaPlugin {
         survivorChecker = new SurvivorChecker(this);
         survivorChecker.reload();
         currentInstance = this;
+        try {
+            new MetricsLite(this).start();
+        } catch (IOException ex) {
+            getLogger().log(Level.WARNING, "Unable to initialize metrics");
+        }
     }
 
     @Override
@@ -68,11 +75,11 @@ public class RankDataBukkit extends JavaPlugin {
         currentInstance = null;
     }
 
-    protected static RankDataBukkit getCurrentInstance() {
+    protected static RankDataPlugin getCurrentInstance() {
         return currentInstance;
     }
 
-    protected PlayerDataBukkit getPDataMain() {
+    protected PlayerDataPlugin getPlayerDataPlugin() {
         return playerDataBukkit;
     }
 

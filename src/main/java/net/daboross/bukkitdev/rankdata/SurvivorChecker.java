@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.daboross.bukkitdev.playerdata.PlayerDataStatic;
 import net.daboross.bukkitdev.playerdata.api.PlayerData;
+import net.daboross.bukkitdev.playerdata.api.PlayerDataStatic;
 import net.daboross.bukkitdev.playerdata.api.PlayerHandler;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -32,20 +32,20 @@ import org.bukkit.Bukkit;
  */
 public class SurvivorChecker {
 
-    private RankDataBukkit rankDataBukkit;
+    private RankDataPlugin rankDataBukkit;
 
-    public SurvivorChecker(RankDataBukkit main) {
+    public SurvivorChecker(RankDataPlugin main) {
         this.rankDataBukkit = main;
     }
 
     protected void reload() {
         Logger l = rankDataBukkit.getLogger();
         rankDataBukkit.getLogger().info("Starting Survivor Check");
-        PlayerHandler handler = rankDataBukkit.getPDataMain().getHandler();
+        PlayerHandler handler = rankDataBukkit.getPlayerDataPlugin().getHandler();
         if (handler == null) {
             return;
         }
-        List<? extends PlayerData> pDataList = rankDataBukkit.getPDataMain().getHandler().getAllPlayerDatas();
+        List<? extends PlayerData> pDataList = rankDataBukkit.getPlayerDataPlugin().getHandler().getAllPlayerDatas();
         int foundReady = 0;
         for (int i = 0; i < pDataList.size(); i++) {
             PlayerData current = pDataList.get(i);
