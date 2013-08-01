@@ -63,10 +63,14 @@ public class RankDataPlugin extends JavaPlugin {
         survivorChecker = new SurvivorChecker(this);
         survivorChecker.reload();
         currentInstance = this;
+        MetricsLite metrics = null;
         try {
-            new MetricsLite(this).start();
+            metrics = new MetricsLite(this);
         } catch (IOException ex) {
-            getLogger().log(Level.WARNING, "Unable to initialize metrics");
+            getLogger().log(Level.WARNING, "Unable to create Metrics", ex);
+        }
+        if (metrics != null) {
+            metrics.start();
         }
     }
 
