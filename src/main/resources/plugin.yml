@@ -1,8 +1,7 @@
-name: RankData
-main: net.daboross.bukkitdev.rankdata.RankDataBukkit
-version: 2.2
+name: ${project.name}
+main: net.daboross.bukkitdev.rankdata.RankDataPlugin
+version: ${project.version}
 author: Dabo Ross
-prefix: RD
 description: This plugin does various data manipulation with Ranks
 depend: [PlayerData, Vault]
 commands:
